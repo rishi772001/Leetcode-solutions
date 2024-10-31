@@ -2,25 +2,31 @@ package com.rishi.Hard;
 
 import java.util.*;
 
+/**
+ * Intuition:
+ * 1. Find left pool size and right pool size. based on n & m
+ * 2. Partition the arrays based on the pool size.
+ * 3. Select how to make the partition based on binary search
+ */
 public class MedianOfTwoSortedArrays {
+    /*
+    [1,2,8]
+    [3,4,5]
+
+    [1,2,3,4,5,8]
+     */
     public double findMedianSortedArrays(int[] nums1, int[] nums2) {
-        ArrayList<Double> nums = new ArrayList<>();
+        int n = nums1.length;
+        int m = nums2.length;
 
-        for(int i : nums1){
-            nums.add((double)i);
-        }
-        for(int i : nums2){
-            nums.add((double)i);
+        int leftPoolSize = (int) Math.ceil((n + m) / 2.0) - 1;
+        int rightPoolSize = n + m - leftPoolSize;
+
+        for(int i = 0; i < leftPoolSize; i++)
+        {
+            int j = leftPoolSize - i;
         }
 
-        Collections.sort(nums);
-        if(nums.size() % 2 == 0) {
-            int n1 = nums.size() / 2;
-            int n2 = n1 - 1;
-            return (nums.get(n1) + nums.get(n2)) / 2.0;
-        }
-        else{
-            return nums.get(nums.size() / 2);
-        }
+        return 0.0;
     }
 }

@@ -1,13 +1,14 @@
 package com.rishi.Medium;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class SubArraySumEqualsK
 {
 	public static int subarraySum(int[] nums, int k) {
 		int n = nums.length;
-		Map<Integer, Integer> prefixSumMap = new HashMap<>();
+		Map<Integer, Integer> prefixSumMap = new LinkedHashMap<>();
 		int count = 0;
 		int sum = 0;
 		for(int i = 0; i < n; i++)

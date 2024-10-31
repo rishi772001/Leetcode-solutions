@@ -1,5 +1,7 @@
 package com.rishi.Medium;
 
+import java.util.Arrays;
+
 public class UniquePaths
 {
 	public static int uniquePaths(int m, int n) {
@@ -30,17 +32,16 @@ public class UniquePaths
 			}
 		}
 
-		// for (int i = 0; i < m; i++)
-		// {
-		//     for (int j = 0; j < n; j++)
-		//         System.out.print(dp[i][j]);
-		//     System.out.println();
-		// }
+		 for (int i = 0; i < m; i++)
+		 {
+			 System.out.print(Arrays.toString(dp[i]));
+		     System.out.println();
+		 }
 		return dp[m - 1][n - 1];
 	}
 
 	public static void main(String[] args)
 	{
-		System.out.println(uniquePaths(3, 2));
+		System.out.println(uniquePaths(3, 7));
 	}
 }

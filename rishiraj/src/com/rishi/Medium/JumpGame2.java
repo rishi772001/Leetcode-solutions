@@ -30,4 +30,42 @@ public class JumpGame2 {
 
 		return dp[dp.length - 1] > 0 ? dp[dp.length - 1] : -1;
 	}
+
+	public static int jumpGreedy(int[] nums) {
+		int near = 0; // left pointer
+		int far = nums[near]; // right pointer
+		int farthest = 0; // choose where to jump(curr index + jump value > farthest) - ranges between near and far
+		int jumps = 0;
+
+		if(nums.length == 1)
+			return 0;
+
+		while(far < nums.length)
+		{
+			while(near <= far)
+			{
+				if(nums[near] + near > farthest)
+					farthest = nums[near] + near;
+				near++;
+			}
+
+			if(far == nums.length - 1)
+				return jumps + 1;
+
+			if(farthest == far)
+			{
+				System.out.println("Cannot jump to the end");
+				return -1;
+			}
+			far = farthest;
+			jumps++;
+		}
+
+		return jumps + 1;
+	}
+
+	public static void main(String[] args)
+	{
+		System.out.println(jumpGreedy(new int[]{1,2,3}));
+	}
 }

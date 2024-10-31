@@ -21,7 +21,7 @@ public class LongestCommonSubsequence
 				else if(text1.charAt(i - 1) == text2.charAt(j - 1))
 					dp[i][j] = dp[i - 1][j - 1] + 1; // if character matches, We will add one to the value with excluding both i and j character
 				else
-					dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]); // if character matches, We will take the value with max of excluding either ith or jth character
+					dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]); // if character not matches, We will take the value with max of excluding either ith or jth character
 			}
 		}
 		return dp[text1.length()][text2.length()];

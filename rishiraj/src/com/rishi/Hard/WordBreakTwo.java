@@ -56,8 +56,20 @@ public class WordBreakTwo
 		output.add(currentBuilder.toString());
 	}
 
+
+	public static List<String> wordBreakDP(String s, List<String> wordDict)
+	{
+		/*
+		     012       3        456         789
+			"cat       s        and         dog"
+			   (0, cat)(0, cats)  (4, and)    (7, dog)
+			   					  (3, sand)
+		*/
+		return null;
+	}
+
 	public static void main(String[] args)
 	{
-		System.out.println(wordBreak("candanddog", List.of("cat","cats","and","sand","dog")));
+		System.out.println(wordBreak("catsanddog", List.of("cat","cats","and","sand","dog")));
 	}
 }
