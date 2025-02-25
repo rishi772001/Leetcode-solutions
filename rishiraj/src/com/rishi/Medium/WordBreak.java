@@ -59,6 +59,6 @@ public class WordBreak
 
 	public static void main(String[] args)
 	{
-		System.out.println(wordBreak("aaaaaaa", List.of("aa", "aaaa")));
+//		System.out.println(wordBreak("aaaaaaa", List.of("aa", "aaaa")));
 	}
 }

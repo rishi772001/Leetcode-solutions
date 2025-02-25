@@ -70,6 +70,6 @@ public class WordBreakTwo
 
 	public static void main(String[] args)
 	{
-		System.out.println(wordBreak("catsanddog", List.of("cat","cats","and","sand","dog")));
+//		System.out.println(wordBreak("catsanddog", List.of("cat","cats","and","sand","dog")));
 	}
 }
