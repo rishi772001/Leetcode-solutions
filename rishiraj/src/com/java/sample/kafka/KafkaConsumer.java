@@ -1,17 +1,70 @@
 package com.java.sample.kafka;
 
-public class KafkaConsumer {
-    private int offset = -1; //Initially no message will be consumed. If it is zero, it depicts it consumed the zeroth message
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-    public int getOffset() {
-        return offset;
+public class KafkaConsumer {
+    public static final int MESSAGE_CHECK_INTERVAL_MILLIS = 50;
+
+    private int id;
+    Map<KafkaPartition, Integer> partitionOffsetMap;
+
+    public KafkaConsumer(int id) {
+        this.id = id;
+        this.partitionOffsetMap = new HashMap<>();
+        startConsumer();
     }
 
-    public void consume(KafkaMessage message, int partitionId) throws InterruptedException {
-        Thread.sleep(100); // Imagining if this task takes 100 millis to complete
-        System.out.println("Message consumed - " + message.getValue() + " in the partition " + partitionId);
-        // Updating the message to consumed state
-        KafkaQueue.getInstance().consume(message);
-        this.offset = message.getOffset();
+    public void subscribe(KafkaPartition kafkaPartition) {
+        partitionOffsetMap.put(kafkaPartition, 0); // Initially setting offset to zero
+    }
+
+    // Private helpers
+
+    private void startConsumer() {
+        ExecutorService executorService = Executors.newFixedThreadPool(1);
+        executorService.submit(() -> {
+            try {
+                fetchMessages();
+            } catch (InterruptedException e) {
+                System.out.println("Exception occurred in consumer, Killing the process" + e.getMessage());
+                throw new RuntimeException("Kafka consumer action failed in a unexpected way");
+            }
+        });
+    }
+
+    private void fetchMessages() throws InterruptedException {
+        try {
+            while (true) {
+                for (KafkaPartition partition : partitionOffsetMap.keySet()) {
+                    int currentProcessingOffset = partitionOffsetMap.get(partition);
+                    KafkaMessage message = partition.getMessage(currentProcessingOffset);
+                    if (message != null) {
+                        try {
+                            consume(message);
+                            partitionOffsetMap.put(partition, currentProcessingOffset + 1);
+                        } catch (KafkaException e) {
+                            // Not incrementing the offset for retry, TODO:: Add dead letter queue impl here after threshold number of retries
+                            // For now retrying infinite no of times
+                            System.out.println("Exception occurred while consuming message");
+                        }
+                    } else {
+                        // This will occur if queue is empty (or) all messages in queue is processed (or) the message is yet to be consumed
+                        Thread.sleep(MESSAGE_CHECK_INTERVAL_MILLIS);
+                    }
+
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Consumer failed due to - " + Arrays.toString(e.getStackTrace()));
+            throw new InterruptedException("Consumer failed");
+        }
+    }
+
+    public void consume(KafkaMessage message) throws InterruptedException, KafkaException {
+        TestKafka.processMessage(message);
     }
 }
