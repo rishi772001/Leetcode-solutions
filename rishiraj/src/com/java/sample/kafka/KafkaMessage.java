@@ -31,7 +31,8 @@ public class KafkaMessage {
         this.offset = offset;
     }
 
-    public Integer getPartitionKey() {
-        return this.topic.getPartitionKey();
+    public KafkaPartition getPartition() {
+        int partitionKey = this.value % this.topic.getNoOfPartitions();
+        return this.topic.getKafkaPartition(partitionKey);
     }
 }
